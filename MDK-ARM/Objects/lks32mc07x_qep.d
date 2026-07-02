@@ -1,0 +1,31 @@
+./objects/lks32mc07x_qep.o: \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Source\lks32mc07x_qep.c \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_lib.h \
+  D:\Program\Arm\Packs\Linko\LKS07x\1.2.0\Device\Include\lks32mc07x.h \
+  D:\Program\Arm\Packs\Linko\LKS07x\1.2.0\Device\Include\basic.h \
+  D:\Program\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Include\core_cm0.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_user_manual.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_adc.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_cmp.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_clu.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_sys.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_crc.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_can.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_dma.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_dac.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_dsp.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_exti.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_gpio.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_flash.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_hall.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_i2c.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_mcpwm.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_nvr.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_opa.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_qep.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_sif.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_spi.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_tim.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_tmp.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_uart.h \
+  ..\1_LKS_FwLib\lks32mc07x_periph_driver\Include\lks32mc07x_wake.h
