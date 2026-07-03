@@ -1,0 +1,116 @@
+# Treadmill Motor FOC Controller
+
+FOC motor controller for treadmill based on LKS32MC071.
+
+---
+
+## Project Information
+
+| Item | Description |
+|------|-------------|
+| MCU | LKS32MC071C8T8 |
+| IDE | Keil MDK V5 |
+| Language | C |
+| Motor | PMSM |
+| Pole pairs | 5 |
+| Pole | 10 |
+| Driver | EG2336 |
+| Control | FOC |
+| Encoder | HALL |
+| Communication | UART |
+
+---
+
+## Features
+
+- [x] FOC Current Loop
+- [x] Speed Loop
+- [x] Position Loop
+- [x] Trapezoidal Motion Planning
+- [x] DRV8711 Driver
+- [x] 1527 Remote Control
+- [x] UART Communication
+- [x] Stall Detection
+- [x] Current Protection
+
+---
+
+## Directory Structure
+
+```text
+.
+©À©¤©¤ 0_Include
+©À©¤©¤ 1_LKS_FwLib
+©À©¤©¤ 2_HardwareDriverLayer
+©À©¤©¤ 3_CommonServiceLayer
+©À©¤©¤ 4_MotorDriveLayer
+©À©¤©¤ 5_MotorAppLayer
+©À©¤©¤ 6_UserAppLayer
+©À©¤©¤ Docs
+©¸©¤©¤ MDK-ARM
+```
+
+---
+
+## Build
+
+Open
+
+```text
+MDK-ARM/LK_StdPeriph.uvprojx
+```
+
+Compile with
+
+```
+Keil MDK V5
+```
+
+## Project Architecture
+
+```
+Application
+      ©¦
+Motor Application Layer
+      ©¦
+Motor Drive Layer
+      ©¦
+Common Service Layer
+      ©¦
+Hardware Driver Layer
+      ©¦
+LKS Peripheral Library
+      ©¦
+Hardware
+```
+
+## Communication
+
+UART Command
+
+```
+Upper controller
+ ©¦
+UART
+ ©¦
+Motor Controller
+```
+
+
+## Development Environment
+
+| Tool | Version |
+|------|----------|
+| Keil MDK | V5 |
+| Git | Latest |
+| GitHub | Latest |
+
+---
+
+## Version History
+
+| Version | Date | Description |
+|---------|------|-------------|
+| v1.0.0 | 2026-07-02 | Initial Release |
+
+---
