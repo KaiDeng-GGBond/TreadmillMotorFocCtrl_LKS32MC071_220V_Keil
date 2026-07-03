@@ -25,12 +25,7 @@ FOC motor controller for treadmill based on LKS32MC071.
 
 - [x] FOC Current Loop
 - [x] Speed Loop
-- [x] Position Loop
-- [x] Trapezoidal Motion Planning
-- [x] DRV8711 Driver
-- [x] 1527 Remote Control
 - [x] UART Communication
-- [x] Stall Detection
 - [x] Current Protection
 
 ---
@@ -39,15 +34,15 @@ FOC motor controller for treadmill based on LKS32MC071.
 
 ```text
 .
-©À©¤©¤ 0_Include
-©À©¤©¤ 1_LKS_FwLib
-©À©¤©¤ 2_HardwareDriverLayer
-©À©¤©¤ 3_CommonServiceLayer
-©À©¤©¤ 4_MotorDriveLayer
-©À©¤©¤ 5_MotorAppLayer
-©À©¤©¤ 6_UserAppLayer
-©À©¤©¤ Docs
-©¸©¤©¤ MDK-ARM
+ 0_Include
+ 1_LKS_FwLib
+ 2_HardwareDriverLayer
+ 3_CommonServiceLayer
+ 4_MotorDriveLayer
+ 5_MotorAppLayer
+ 6_UserAppLayer
+ Docs
+ MDK-ARM
 ```
 
 ---
@@ -66,36 +61,7 @@ Compile with
 Keil MDK V5
 ```
 
-## Project Architecture
-
-```
-Application
-      ©¦
-Motor Application Layer
-      ©¦
-Motor Drive Layer
-      ©¦
-Common Service Layer
-      ©¦
-Hardware Driver Layer
-      ©¦
-LKS Peripheral Library
-      ©¦
-Hardware
-```
-
-## Communication
-
-UART Command
-
-```
-Upper controller
- ©¦
-UART
- ©¦
-Motor Controller
-```
-
+---
 
 ## Development Environment
 
