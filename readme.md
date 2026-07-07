@@ -78,5 +78,6 @@ Keil MDK V5
 | Version | Date | Description |
 |---------|------|-------------|
 | v1.0.0 | 2026-07-02 | Initial Release |
+| v1.0.1 | 2026-07-07 | 修改堵转保护逻辑 |
 
 ---
