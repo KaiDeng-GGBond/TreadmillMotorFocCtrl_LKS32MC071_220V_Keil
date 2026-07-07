@@ -196,13 +196,13 @@ void TableCalcBusVolt(void)
  * 4. 再做一阶低通，把换相边沿的毛刺和 ADC 抖动压一压，再交给电流环。
  */
 volatile int16_t adc_sample_volt_mv[3];		//存储ADC转换后的电压值（单位mv）
+uint16_t g_abs_current_max;
 void CalcPhaseCurrent(void)
 {
 	uint16_t abs_current_u;
 	uint16_t abs_current_v;
 	uint16_t abs_current_w;
-	uint16_t abs_current_max;
-
+	
 	/* 获取原始采样ADC值，输出为12bit补码 */
 	adcRawValue[0] = ADC_GetConversionValue(ADC0, DAT0);/* OPA0 -> W相 */
 	adcRawValue[1] = ADC_GetConversionValue(ADC0, DAT1);/* OPA1 -> V相 */
@@ -223,23 +223,23 @@ void CalcPhaseCurrent(void)
 	abs_current_u = adc_abs_s16(gAdcObj.adc_sample_current_ma[2]);
 	
 	/* 获取最大电流 */
-	abs_current_max = abs_current_w;
-	if(abs_current_v > abs_current_max)
+	g_abs_current_max = abs_current_w;
+	if(abs_current_v > g_abs_current_max)
 	{
-		abs_current_max = abs_current_v;
+		g_abs_current_max = abs_current_v;
 	}
-	if(abs_current_u > abs_current_max)
+	if(abs_current_u > g_abs_current_max)
 	{
-		abs_current_max = abs_current_u;
+		g_abs_current_max = abs_current_u;
 	}
 	
 	/* 软过流保护 */
-	if(abs_current_max >= MAX_PHASE_SOFTWARE_CURRENT_MA)
+	if(g_abs_current_max >= MAX_PHASE_SOFTWARE_CURRENT_MA)
 	{
 		struFOC_CtrProc.struFOC_CurrLoop.softwareOverCurrentFlag = 1;//软过流标志位置1
 		
 		/* 过流保护 */
-		if(abs_current_max >= MAX_PHASE_HARDWARE_CURRENT_MA)
+		if(g_abs_current_max >= MAX_PHASE_HARDWARE_CURRENT_MA)
 		{
 			PWMOutputs(DISABLE);//关波
 			
@@ -255,11 +255,10 @@ void CalcPhaseCurrent(void)
 	}
 	
 	/* 记录最大电流 */
-	if(abs_current_max > gAdcObj.max_current_record)
+	if(g_abs_current_max > gAdcObj.max_current_record)
 	{
-		gAdcObj.max_current_record = abs_current_max;
+		gAdcObj.max_current_record = g_abs_current_max;
+		vofa_justfloat_data[2] = g_abs_current_max;
 	}
-	
-	vofa_justfloat_data[4] = abs_current_max;
 }
 

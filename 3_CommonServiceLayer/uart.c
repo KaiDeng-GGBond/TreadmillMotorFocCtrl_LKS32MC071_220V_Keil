@@ -187,9 +187,9 @@ extern uint8_t gOpenLoopHallBuffer[OPENLOOP_BUFFER_SIZE][6];	// Hall值环形缓冲区
 extern uint16_t gOpenLoopAngleBuffer[OPENLOOP_BUFFER_SIZE][6];	// 角度环形缓冲区 (每组6个角度值)
 extern uint8_t gBufferWritePointer;		// 写指针
 extern uint16_t gAngleTemp[6];			//临时存角度
-extern uint8_t gHallTemp[6];				//临时存hall值
-extern uint8_t gOpenLoopStudyPointer;		//临时存放的指针
-extern uint8_t gBufferValidGroups;			// 有效数据组数
+extern uint8_t gHallTemp[6];			//临时存hall值
+extern uint8_t gOpenLoopStudyPointer;	//临时存放的指针
+extern uint8_t gBufferValidGroups;		// 有效数据组数
 extern uint8_t gBufferOverflowFlag;		// 是否发生过溢出（环形覆盖）
 extern uint8_t gTrig7;
 

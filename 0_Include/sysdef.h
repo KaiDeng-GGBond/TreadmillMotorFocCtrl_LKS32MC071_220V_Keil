@@ -67,15 +67,12 @@ extern float vofa_justfloat_data[9];
 #define SPEED_LOOP_ENABLE					0							/* 是否打开速度环 */
 #endif
 
-#define LOW_VOLT_DEBUG						1							/* 低压调试 */
+#define LOW_VOLT_DEBUG						0							/* 低压调试 */
 
 #define CURRENT_RECONSTRUCTION				0							/* 是否重构电流 */
 
 #define CERRENT_LOOP_BAND_WIDTH_TEST		1							/* 电流环带宽测试 */
 
-#define FOC_DEBUG_PRINT						0							/* 是否打印foc运算过程的数据 */
-#define ADC_DEBUG_PRINT						0							/* 是否打印ADC采样中的数据 */
-#define PID_DEBUG_PRINT						0							/* 是否打印PID计算中的数据 */
 /*********************************************其他********************************************/
 #define ABS(X)								( ( (X) >= 0 ) ? (X) : -(X) )
 

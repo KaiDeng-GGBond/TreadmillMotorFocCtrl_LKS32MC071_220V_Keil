@@ -94,7 +94,7 @@ void LowPass_Filter_Init(stru_FOC_CtrProcDef *this)
 }
 
 
-#define CURRENT_PID_PUTPUT_LIMIT 		(10000)
+#define CURRENT_PID_OUTPUT_LIMIT 		(10000)
 #define CURRENT_PID_INTEGRAL_LIMIT 		(10000)
 /* FOC参数初始化，上电用，主要包括PI参数，电机状态机状态，相电流RC滤波参数 */
 void FOC_InitstruParama(void)
@@ -104,8 +104,8 @@ void FOC_InitstruParama(void)
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.hKp_Divisor = 8;
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.hKi_Gain = 100;//Q15
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.hKi_Divisor = 8;
-    struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.hLower_Limit_Output = -CURRENT_PID_PUTPUT_LIMIT;//-32000;
-    struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.hUpper_Limit_Output = CURRENT_PID_PUTPUT_LIMIT;//32000;
+    struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.hLower_Limit_Output = -CURRENT_PID_OUTPUT_LIMIT;//-32000;
+    struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.hUpper_Limit_Output = CURRENT_PID_OUTPUT_LIMIT;//32000;
 	//pid输出到uq中，测试：7800、7900的uq输出限幅约对应1570rpm
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.wLower_Limit_Integral = -CURRENT_PID_INTEGRAL_LIMIT;//-20000;
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Torque.wUpper_Limit_Integral = CURRENT_PID_INTEGRAL_LIMIT;//30000;
@@ -116,8 +116,8 @@ void FOC_InitstruParama(void)
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.hKp_Divisor = 8;
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.hKi_Gain = 100;//800;//4000;//Q15
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.hKi_Divisor = 8;
-    struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.hLower_Limit_Output = -CURRENT_PID_PUTPUT_LIMIT;//-15000;
-    struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.hUpper_Limit_Output = CURRENT_PID_PUTPUT_LIMIT;//15000;
+    struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.hLower_Limit_Output = -CURRENT_PID_OUTPUT_LIMIT;//-15000;
+    struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.hUpper_Limit_Output = CURRENT_PID_OUTPUT_LIMIT;//15000;
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.wLower_Limit_Integral = -CURRENT_PID_INTEGRAL_LIMIT;//-20000;
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.wUpper_Limit_Integral = CURRENT_PID_INTEGRAL_LIMIT;//20000;
     struFOC_CtrProc.struFOC_CurrLoop.struPI_Flux.wIntegral = 0;
@@ -168,7 +168,6 @@ void FOC_Model(stru_FOC_CtrProcDef *pCtrObj)
 
 	/* 帕克变换，把静止坐标系电流映射到随转子旋转的 dq 坐标系。d轴：励磁分量，q轴：转矩分量 */
 	CurrentObj->struCurr_q_d = Park(CurrentObj->struCurr_alfa_beta , theatae , CurrentObj);
-	vofa_justfloat_data[0] = CurrentObj->struCurr_q_d.qI_Value1;
 	vofa_justfloat_data[1] = CurrentObj->struCurr_q_d.qI_Value2;
 	
 	int16_t iq_ref_q15, id_ref_q15;
@@ -195,30 +194,30 @@ void FOC_Model(stru_FOC_CtrProcDef *pCtrObj)
 		/* 参考值在这里从mA转成Q15，反馈值已经在前面Get_PhaseCurrent_AndFilter(CurrentObj)中已转换为Q15 */
 		id_ref_q15 = CurrentMa_ToQ15(CurrentObj->id_Reference);//归一化，q1.15格式的电流值
 		iq_ref_q15 = CurrentMa_ToQ15(CurrentObj->iq_Reference);//归一化，q1.15格式的电流值
-		vofa_justfloat_data[2] = id_ref_q15;
-
+		vofa_justfloat_data[0] = id_ref_q15;
+		
 #if CERRENT_LOOP_BAND_WIDTH_TEST
-	/* 在这里弄个循环缓冲区，把id_ref_q15和真实id_q15存起来，真实id_q15接近了id_ref_q15就暂停存 */
-	if((cur_bw_test.recording == 0) && (ABS(id_ref_q15 - cur_bw_test.last_id_ref_q15)>100))//有阶跃输入了
-	{
-		cur_bw_test.recording = 1;
-		cur_bw_test.index = 0;
-	}
-	cur_bw_test.last_id_ref_q15 = id_ref_q15;
-	
-	if(cur_bw_test.recording)
-	{
-		cur_bw_test.ref[cur_bw_test.index] = id_ref_q15;
-		cur_bw_test.fb[cur_bw_test.index]  = CurrentObj->struCurr_q_d.qI_Value2;
-
-		cur_bw_test.index++;
-
-		if(cur_bw_test.index >= 256)
+		/* 在这里弄个循环缓冲区，把id_ref_q15和真实id_q15存起来，真实id_q15接近了id_ref_q15就暂停存 */
+		if((cur_bw_test.recording == 0) && (ABS(id_ref_q15 - cur_bw_test.last_id_ref_q15)>100))//有阶跃输入了
 		{
-			cur_bw_test.recording = 0;
-			gTrig8 = 1;
+			cur_bw_test.recording = 1;
+			cur_bw_test.index = 0;
 		}
-	}
+		cur_bw_test.last_id_ref_q15 = id_ref_q15;
+		
+		if(cur_bw_test.recording)
+		{
+			cur_bw_test.ref[cur_bw_test.index] = id_ref_q15;
+			cur_bw_test.fb[cur_bw_test.index]  = CurrentObj->struCurr_q_d.qI_Value2;
+
+			cur_bw_test.index++;
+
+			if(cur_bw_test.index >= 256)
+			{
+				cur_bw_test.recording = 0;
+				//gTrig8 = 1;
+			}
+		}
 #endif
 		
 		/* 赋值期望的Vd/Vq */
@@ -236,7 +235,6 @@ void FOC_Model(stru_FOC_CtrProcDef *pCtrObj)
 		CurrentObj->struVolt_q_d.qV_Value1 = iq_ref_q15;//接220市电，给定1250,空载下能转起来
 		CurrentObj->struVolt_q_d.qV_Value2 = id_ref_q15;
 #endif
-		vofa_justfloat_data[3] = CurrentObj->struVolt_q_d.qV_Value2;
 		
 		/* 做约束：d 轴电压不能大到超过当前q轴总给定,避免弱磁/励磁分量过大，挤占转矩输出空间 */
 		//不能用，给负iq会转不起来

@@ -209,10 +209,10 @@ static void task_50ms(void)
 
 static void task_500ms(void)
 {
-	/* 闪灯 */
+	/* A.闪灯 */
 	led_blink();
 
-	/* 电机停止时（保证在关波下）采集偏置 */
+	/* B.电机停止时（保证在关波下）采集偏置 */
 	if(struFOC_CtrProc.MotorStateMachine == IDLE)
 	{
 		OPAOut_OffsetCalibration();
@@ -220,12 +220,13 @@ static void task_500ms(void)
 	}
 
 #if 1
-	/* 温度计算 */
+	/* C.温度计算 */
 	adcRawValue[4] = ADC_GetConversionValue(ADC0, DAT4);/* NTC -> P2.7 -> ADC0_CH11(ADC0 通道 11) */
 	ntc_temp = ntc_temperature_calc(((int32_t)adcRawValue[4] * 3600 / ADC_RANGE));//ntc_temperature_calc()的传参是mv的电压值
 #endif
 
-#if IF_OPENLOOP /* IF强拖 */
+#if IF_OPENLOOP
+	/* IF强拖后发送多组角度学习数据 */
     if(gTrig7)
     {
         gTrig7 = 0;  // 清除标志
@@ -239,6 +240,7 @@ static void task_500ms(void)
 #endif
 	
 #if CERRENT_LOOP_BAND_WIDTH_TEST
+	/* 记录完电流上升时间后发送数据 */
     if(gTrig8)
     {
         gTrig8 = 0;
